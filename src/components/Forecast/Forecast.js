@@ -24,7 +24,7 @@ function getForecast(e) {
     setLoading(true);
 
     const API_KEY = '1d4ded67ad76eeda7ec0ca23379a912b'
-    const url = `https://api.openweathermap.org/data/2.5/forecast?q=Pretoria&appid=${API_KEY}&units=metric`;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`;
     fetch(url)
     .then(response => response.json())
     .then(data => {
