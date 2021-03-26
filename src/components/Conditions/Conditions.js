@@ -10,10 +10,10 @@ const conditions = (props) => {
             {props.loading && <div className={classes.Loader} />}
 
 
-            {props.responseObj.cod === 200 ?
+            {props.responseObj.cod === "200" ?
                 <div>
                     <p><strong>{props.responseObj.name}</strong></p>
-                    <p>It is currently {Math.round(props.responseObj.main.temp)} degrees out with {props.responseObj.weather[0].description}.</p>
+                    <p>It is currently {Math.round(props.responseObj.list[0].main.temp)} degrees out with {props.responseObj.list[0].weather[0].description}.</p>
                 </div>
             : null
             }

@@ -4,11 +4,11 @@ import classes from './Forecast.module.css';
 
 const Forecast = () => {
 
-    let [city, setCity] = useState('');
-    let [unit, setUnit] = useState('imperial');
-    let [responseObj, setResponseObj] = useState({});
-    let [error, setError] = useState(false);
-    let [loading, setLoading] = useState(false);
+    const [city, setCity] = useState('');
+    const [unit, setUnit] = useState('imperial');
+    const [responseObj, setResponseObj] = useState({});
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
 
 function getForecast(e) {
     e.preventDefault();
@@ -20,27 +20,19 @@ function getForecast(e) {
     // Clear state in preparation for new data
     setError(false);
     setResponseObj({});
-    
+
     setLoading(true);
 
-    //const API_KEY = '1d4ded67ad76eeda7ec0ca23379a912b'
-    const url = `https://api.openweathermap.org/data/2.5/forecast?q=Pretoria&appid=${process.env.REACT_APP_API_KEY}&units=metric`;
+    const API_KEY = '1d4ded67ad76eeda7ec0ca23379a912b'
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=Pretoria&appid=${API_KEY}&units=metric`;
     fetch(url)
-
-    //fetch(`https://cors-anywhere.herokuapp.com/http://samples.openweathermap.org/data/2.5/forecast?appid=${process.env.REACT_APP_API_KEY}`, {
-       // "method": "GET",
-       // "headers": {
-       //     "x-rapidapi-host": process.env.REACT_APP_API_URL,
-        //    "x-rapidapi-key": process.env.REACT_APP_API_KEY
-        //}
-   // }
     .then(response => response.json())
-    .then(response => {
-        if (response.cod !== 200) {
+    .then(data => {
+        if (data.cod !== "200") {
             throw new Error()
         }
 
-        setResponseObj(response);
+        setResponseObj(data);
         setLoading(false);
     })
     .catch(err => {
