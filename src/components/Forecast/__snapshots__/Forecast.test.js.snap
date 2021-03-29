@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders a snaphsot 1`] = `
+<div>
+  <h2>
+    Find Current Weather Conditions
+  </h2>
+  <form
+    onSubmit={[Function]}
+  >
+    <input
+      className="textInput"
+      maxLength="50"
+      onChange={[Function]}
+      placeholder="Enter City"
+      type="text"
+      value=""
+    />
+    <label
+      className="Radio"
+    >
+      <input
+        checked={true}
+        name="units"
+        onChange={[Function]}
+        type="radio"
+        value="imperial"
+      />
+      Fahrenheit
+    </label>
+    <label
+      className="Radio"
+    >
+      <input
+        checked={false}
+        name="units"
+        onChange={[Function]}
+        type="radio"
+        value="metric"
+      />
+      Celcius
+    </label>
+    <button
+      className="Button"
+      type="submit"
+    >
+      Get Forecast
+    </button>
+  </form>
+  <div
+    className="Wrapper"
+  />
+</div>
+`;

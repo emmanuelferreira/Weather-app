@@ -2,88 +2,91 @@ import React, { useState } from 'react';
 import Conditions from '../Conditions/Conditions';
 import classes from './Forecast.module.css';
 
-const Forecast = () => {
+class Forecast extends React.Component {
 
-    const [city, setCity] = useState('');
-    const [unit, setUnit] = useState('imperial');
-    const [responseObj, setResponseObj] = useState({});
-    const [error, setError] = useState(false);
-    const [loading, setLoading] = useState(false);
-
-function getForecast(e) {
-    e.preventDefault();
-
-    if (city.length === 0) {
-        return setError(true);
+  constructor(props){
+    super(props);
+    this.state = {
+      city: '',
+      responseObj: {},
+      unit: 'imperial',
+      error: false,
+      loading: false
     }
+  }
 
+  getForecast = (event) => {
+    event.preventDefault();
+    if(this.state.city.length === 0) { this.setState({error: true})}
     // Clear state in preparation for new data
-    setError(false);
-    setResponseObj({});
+    this.setState({
+      error: false,
+      loading: true
+    });
 
-    setLoading(true);
-
-    const API_KEY = '1d4ded67ad76eeda7ec0ca23379a912b'
-    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`;
+    const API_KEY = process.env.REACT_APP_API_KEY;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${this.state.city}&appid=${API_KEY}&units=metric`;
     fetch(url)
     .then(response => response.json())
     .then(data => {
-        if (data.cod !== "200") {
-            throw new Error()
-        }
-
-        setResponseObj(data);
-        setLoading(false);
+      if (data.cod !== "200") { throw new Error() }
+      this.setState({
+        responseObj: data,
+        loading:false
+      })
     })
     .catch(err => {
-        setError(true);
-        setLoading(false);
-        console.log(err.message);
+        this.setState({
+          loading:false,
+          error: true
+        })
     });
-}
+  }
 
+  render() {
     return (
-        <div>
-            <h2>Find Current Weather Conditions</h2>
-            <form onSubmit={getForecast}>
-                <input
-                    type="text"
-                    placeholder="Enter City"
-                    maxLength="50"
-                    className={classes.textInput}
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    />
-                <label className={classes.Radio}>
-                    <input
-                        type="radio"
-                        name="units"
-                        checked={unit === "imperial"}
-                        value="imperial"
-                        onChange={(e) => setUnit(e.target.value)}
-                        />
-                    Fahrenheit
-                </label>
-                <label className={classes.Radio}>
-                    <input
-                        type="radio"
-                        name="units"
-                        checked={unit === "metric"}
-                        value="metric"
-                        onChange={(e) => setUnit(e.target.value)}
-                        />
-                    Celcius
-                </label>
+      <div>
+          <h2>Find Current Weather Conditions</h2>
+          <form onSubmit={this.getForecast}>
+              <input
+                  type="text"
+                  placeholder="Enter City"
+                  maxLength="50"
+                  className={classes.textInput}
+                  value={this.state.city}
+                  onChange={(e) => this.setState({city: e.target.value})}
+                  />
+              <label className={classes.Radio}>
+                  <input
+                      type="radio"
+                      name="units"
+                      checked={this.state.unit === "imperial"}
+                      value="imperial"
+                      onChange={(e) => this.setState({unit: e.target.value})}
+                      />
+                  Fahrenheit
+              </label>
+              <label className={classes.Radio}>
+                  <input
+                      type="radio"
+                      name="units"
+                      checked={this.state.unit === "metric"}
+                      value="metric"
+                      onChange={(e) => this.setState({unit: e.target.value})}
+                      />
+                  Celcius
+              </label>
 
-                <button className={classes.Button} type="submit">Get Forecast</button>
-            </form>
-            <Conditions
-               responseObj={responseObj}
-               error={error}
-               loading={loading}
-               />
-        </div>
+              <button className={classes.Button} type="submit">Get Forecast</button>
+          </form>
+          <Conditions
+            responseObj={this.state.responseObj}
+            error={this.state.error}
+            loading={this.state.loading}
+          />
+      </div>
     )
+  }
 }
 
 export default Forecast;
